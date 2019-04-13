@@ -5,6 +5,7 @@ import multiprocessing
 import timeit
 import operator
 import os
+import re
 from numpy.random import RandomState
 # 打开文件
 # 分割数据集
@@ -13,6 +14,14 @@ from numpy.random import RandomState
 验证分割的数据集是否正确
 调用算法进行预训练，跑起来
 '''
+def test_split():
+    s='123,234,,422:123  412 : 1::::1241'
+    s1='1::1193::5::978300760'
+    s3='195,241,3,881250949'
+    pattern = r'[,|\s|:]+'
+    result=re.split(pattern,s3)
+    print(result)
+
 def test_rand():
     rdm = RandomState(1)
     dataset_size = 5
@@ -86,4 +95,5 @@ if __name__ == '__main__':
     # test_sp()
     # mult()
     # test_path()
-    test_rand()
+    # test_rand()
+    test_split()
