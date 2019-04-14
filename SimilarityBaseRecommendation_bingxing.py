@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import sys
 import scipy.sparse as sp
 import heapq
 import numpy as np
@@ -7,7 +6,7 @@ import math
 import time
 import os
 import re
-from prepare_datasets.Recommendation import Recommendation
+from Recommendation import Recommendation
 import multiprocessing
 
 class SimilarityBaseRecommendation(Recommendation):
@@ -28,13 +27,15 @@ class SimilarityBaseRecommendation(Recommendation):
         # print(self.itemSimialrityMatrix_Sitem)
         print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
         print(self.itemSimialrityMatrix_Sitem)
-        np.save(os.getcwd() + '\\out_file\\itemSimialrityMatrix_Sitem.npy', self.itemSimialrityMatrix_Sitem)
+        np.save(os.getcwd() + '\\out_file\\itemSimialrityMatrix_'+os.path.basename(file)+'.npy', self.itemSimialrityMatrix_Sitem)
         print('successful generate itemSimialrityMatrix!!')
         self.userSimilarityMatrix = self.Generate_UserSimilarity_Matrix()
-        np.save(os.getcwd() + '\\out_file\\userSimialrityMatrix_S.npy', self.userSimilarityMatrix)
+        np.save(os.getcwd() + '\\out_file\\userSimialrityMatrix_'+os.path.basename(file)+'.npy', self.userSimilarityMatrix)
         print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
         print('successful Generate_UserSimilarity_Matrix!!')
         self.predictMatrix = self.Generate_PredictRating_Matrix(2)
+        K=str(10)
+        np.save(os.getcwd() + '\\out_file\\predictMatrix_'+K+'_'+os.path.basename(file)+'.npy', self.predictMatrix)
         print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
         print(self.predictMatrix)
         self.predictMatrix1 = self.Generate_PredictRating_Matrix(3)
@@ -192,7 +193,7 @@ class SimilarityBaseRecommendation(Recommendation):
             userId_j = [x2 for x2 in range(0, self.num_users)]
             zip_args = list(zip(userId_i1, userId_j))
             cores = multiprocessing.cpu_count()
-            p = multiprocessing.Pool(processes=4)
+            p = multiprocessing.Pool(processes=cores)
             userSimilarityMatrix[userId_i] = p.map(self.multi_S, zip_args)
             p.close()
             p.join()
@@ -288,11 +289,11 @@ class SimilarityBaseRecommendation(Recommendation):
 
 
 if __name__ == '__main__':
-    csv_path = 'C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\prepare_datasets\\Hybird_data.csv'
+    csv_path = os.getcwd()+ '\\prepare_datasets\\Hybird_data.csv'
     # m1-1m
-    csv_path1 = 'C:\\Users\\suxik\Desktop\\text\graduation-project-\\prepare_datasets\\ml-1m.train.rating'
+    csv_path1 = os.getcwd()+ '\\prepare_datasets\\ml-1m.train.rating'
     # m1-100k
-    csv_path2 = 'E:\\0学业\\毕设\\useful_dataset\\m-100k\\m1-100k.csv'
+    csv_path2 = os.getcwd()+'\\prepare_datasets\\m1-100k.csv'
 
     print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
 

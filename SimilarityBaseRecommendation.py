@@ -3,7 +3,7 @@ import heapq
 import numpy as np
 import math
 import time
-from prepare_datasets.Recommendation import Recommendation
+from Recommendation import Recommendation
 
 
 class SimilarityBaseRecommendation(Recommendation):

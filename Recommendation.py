@@ -13,14 +13,12 @@ class Recommendation():
     def __init__(self, file):
         # 获取用户数和物品数量
         self.num_users, self.num_items = self.Count_Num_Of_UserAndItem(file)
-        # 生成测试和训练文件在当前工作目录下
-        train, test = self.SplitData(file, 10, 2, 1)
         # 构建训练评分矩阵
-        # self.trainMatrix = self.Transform_list_To_RatingMatrix(train)
-        self.trainMatrix = self.Transform_csv_To_RatingMatrix('C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\prepare_datasets\\Hybird_data.csv')
-
+        self.trainMatrix = self.Transform_csv_To_RatingMatrix(
+            os.getcwd() + '\\prepare_datasets\\' + os.path.basename(file) + '_train.csv')
         # 构建测试评分矩阵用于后期评估运算
-        self.testMatrix = self.Transform_list_To_RatingMatrix(test)
+        self.testMatrix = self.Transform_csv_To_RatingMatrix(
+            os.getcwd() + '\\prepare_datasets\\' + os.path.basename(file) + '_test.csv')
         print('success Transform_csv_To_RatingMatrix!!!')
         self.ratingMax, self.ratingMim, self.num_scale = 5, 1, 5
 
@@ -88,28 +86,10 @@ class Recommendation():
                 else:
                     train.append([arr[0], arr[1], arr[2]])
                 line = f.readline()
-        # 以文件的形式存储
-        # trainfile_path = 'C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\prepare_datasets\\train.csv'
-        # if os.path.exists(trainfile_path):
-        #     os.remove(trainfile_path)
-        # testfile_path = 'C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\prepare_datasets\\test.csv'
-        # if os.path.exists(testfile_path):
-        #     os.remove(testfile_path)
-        # with open(file, "r") as f:
-        #     line = f.readline()
-        #     while line != None and line != "":
-        #         if random.randint(0, M) == k:
-        #             with open(testfile_path, 'a') as f_test:
-        #                 f_test.write(line)
-        #         else:
-        #             with open(trainfile_path,'a') as f_train:
-        #                 f_train.write(line)
-        #         line = f.readline()
         return train, test
 
     # preditmatrix 是一个array[][]
     # testmatrix 是一个dokmatirx
-
 
     def Evaluate_MAE(self, preditmatrix, testmatrix):
         matrix_sub = sp.dok_matrix.copy(testmatrix)
@@ -131,28 +111,59 @@ class Recommendation():
         return MAE
 
 
+def SplitData_To_TrainandTest(datafile, M, k, seed):
+    random.seed(seed)
+    # 以文件的形式存储
+    trainfile_path = os.getcwd() + '\\prepare_datasets\\' + os.path.basename(datafile) + '_train.csv'
+    if os.path.exists(trainfile_path):
+        os.remove(trainfile_path)
+    f_train = open(trainfile_path, 'a')
+    testfile_path = os.getcwd() + '\\prepare_datasets\\' + os.path.basename(datafile) + '_test.csv'
+    if os.path.exists(testfile_path):
+        os.remove(testfile_path)
+    f_test = open(testfile_path, 'a')
+    with open(datafile, "r") as f:
+        line = f.readline()
+        while line != None and line != "":
+            if random.randint(0, M) == k:
+                f_test.write(line)
+            else:
+                f_train.write(line)
+            line = f.readline()
+    f_train.close()
+    f_test.close()
+
+
 if __name__ == '__main__':
+    csv_path = os.getcwd()+ '\\prepare_datasets\\Hybird_data.csv'
     csv_path1 = 'E:\\0学业\\毕设\\useful_dataset\\m-100k\\m1-100k.csv'
-    csv_path2 = 'C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\prepare_datasets\\ml-1m.train.rating'
-    csv_path3 = 'C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\prepare_datasets\\Hybird_data.csv'
+    train_path = os.getcwd() + '\\prepare_datasets\\' + os.path.basename(csv_path)+'_train.csv'
+    test_path = os.getcwd() + '\\prepare_datasets\\' + os.path.basename(csv_path)+'_test.csv'
 
-    paths = [csv_path3]
-    for path in paths:
-        print('数据集：%s信息如下：' % (path))
-        Rc = Recommendation(path)
-        print(Rc.num_users)
-        print(Rc.num_items)
-        print(sp.dok_matrix.count_nonzero(Rc.trainMatrix))
-        print(Rc.trainMatrix)
-        print('--------')
-        print(Rc.testMatrix)
-        print(Rc.ratingMax)
-        print(Rc.ratingMim)
-        testmatrix = sp.dok_matrix((5,6), dtype=np.float32)
-        testmatrix[0,0]=2
-        testmatrix[1,1]=4
-        testmatrix[2,1]=2
-        testmatrix[2,2]=3
-
-        testmatrix[4,2]=2
-        print(Rc.Evaluate_MAE([[3,0,4,0,0,0],[0,5,0,5,5,3],[3,4,4,3,4,3],[1,2,1,0,2,0],[1,0,5,0,0,0]],testmatrix))
+    count_train = len(open(train_path, 'rU').readlines())
+    count_test = len(open(test_path, 'rU').readlines())
+    print(count_train)
+    print(count_test)
+    # SplitData_To_TrainandTest(csv_path, 10, 2, 1)
+    # paths = [csv_path3]
+    # for path in paths:
+    #     print('数据集：%s信息如下：' % (path))
+    #     Rc = Recommendation(path)
+    #     print(Rc.num_users)
+    #     print(Rc.num_items)
+    #     print(sp.dok_matrix.count_nonzero(Rc.trainMatrix))
+    #     print(Rc.trainMatrix)
+    #     print('--------')
+    #     print(Rc.testMatrix)
+    #     print(Rc.ratingMax)
+    #     print(Rc.ratingMim)
+    #     testmatrix = sp.dok_matrix((5, 6), dtype=np.float32)
+    #     testmatrix[0, 0] = 2
+    #     testmatrix[1, 1] = 4
+    #     testmatrix[2, 1] = 2
+    #     testmatrix[2, 2] = 3
+    #
+    #     testmatrix[4, 2] = 2
+    #     print(Rc.Evaluate_MAE(
+    #         [[3, 0, 4, 0, 0, 0], [0, 5, 0, 5, 5, 3], [3, 4, 4, 3, 4, 3], [1, 2, 1, 0, 2, 0], [1, 0, 5, 0, 0, 0]],
+    #         testmatrix))

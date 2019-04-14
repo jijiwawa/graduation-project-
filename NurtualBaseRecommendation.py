@@ -1,28 +1,17 @@
 import numpy as np
 
-import theano
-import theano.tensor as T
-import keras
-from keras import backend as K
-from keras import initializations
-from keras.regularizers import l2, activity_l2
-from keras.models import Sequential, Graph, Model
-from keras.layers.core import Dense, Lambda, Activation
-from keras.layers import Embedding, Input, Dense, merge, Reshape, Merge, Flatten, Dropout,dot
+from keras.models import Model
+from keras.layers import Embedding, Input, Dense, merge, Merge, Flatten, Dropout,dot
 from keras.constraints import maxnorm
-from keras.optimizers import Adagrad, Adam, SGD, RMSprop
+from keras.optimizers import SGD
 from evaluate import evaluate_model
-from Dataset import Dataset
 from time import time
-import sys
 import argparse
-import multiprocessing as mp
 from scipy._lib.six import xrange
 import scipy.sparse as sp
-import heapq
 import numpy as np
 import time
-from prepare_datasets.Recommendation import Recommendation
+from Recommendation import Recommendation
 
 class NurtualBaseRecommendation(Recommendation):
 

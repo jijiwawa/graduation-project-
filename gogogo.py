@@ -7,6 +7,7 @@ import operator
 import os
 import re
 from numpy.random import RandomState
+
 # 打开文件
 # 分割数据集
 #
@@ -14,13 +15,16 @@ from numpy.random import RandomState
 验证分割的数据集是否正确
 调用算法进行预训练，跑起来
 '''
+
+
 def test_split():
-    s='123,234,,422:123  412 : 1::::1241'
-    s1='1::1193::5::978300760'
-    s3='195,241,3,881250949'
+    s = '123,234,,422:123  412 : 1::::1241'
+    s1 = '1::1193::5::978300760'
+    s3 = '195,241,3,881250949'
     pattern = r'[,|\s|:]+'
-    result=re.split(pattern,s3)
+    result = re.split(pattern, s3)
     print(result)
+
 
 def test_rand():
     rdm = RandomState(1)
@@ -31,6 +35,7 @@ def test_rand():
     print(X is list)
     print(type(X))
     print(X)
+
 
 def test_sp():
     a = sp.dok_matrix((5, 5), dtype=np.float32)
@@ -49,8 +54,8 @@ def test_path():
     A = [[1, 2], [3, 4]]
     np.save(os.getcwd() + '\\out_file\\A[%d].npy' % (1), A)
     B = np.load(os.getcwd() + '\\out_file\\A.npy')
-    for i in range(0,5):
-        C =  np.load(os.getcwd() + '\\out_file\\userSimilarity[%d].npy'%(i))
+    for i in range(0, 5):
+        C = np.load(os.getcwd() + '\\out_file\\userSimilarity[%d].npy' % (i))
         print(C)
     D = np.load(os.getcwd() + '\\out_file\\itemSimialrityMatrix_Sitem.npy')
     print(D)
@@ -96,4 +101,8 @@ if __name__ == '__main__':
     # mult()
     # test_path()
     # test_rand()
-    test_split()
+    # test_split()
+    datafile = 'E:\\0学业\\毕设\\useful_dataset\\m-100k\\m1-100k.csv'
+    print(os.path.basename(datafile))
+    print(os.getcwd())
+    print(os.getcwd()+'\\prepare_datasets\\'+ os.path.basename(datafile)+'_train.csv')
