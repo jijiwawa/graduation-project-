@@ -102,7 +102,9 @@ if __name__ == '__main__':
     # test_path()
     # test_rand()
     # test_split()
-    datafile = 'E:\\0学业\\毕设\\useful_dataset\\m-100k\\m1-100k.csv'
-    print(os.path.basename(datafile))
-    print(os.getcwd())
-    print(os.getcwd()+'\\prepare_datasets\\'+ os.path.basename(datafile)+'_train.csv')
+    # datafile = 'E:\\0学业\\毕设\\useful_dataset\\m-100k\\m1-100k.csv'
+    # print(os.path.basename(datafile))
+    # print(os.getcwd())
+    # print(os.getcwd()+'\\prepare_datasets\\'+ os.path.basename(datafile)+'_train.csv')
+    for t in range(5):
+        print(t)
