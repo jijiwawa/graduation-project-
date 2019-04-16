@@ -10,31 +10,16 @@ import random
 
 class Recommendation():
 
-    def __init__(self, file):
+    # 每个file 均为路径
+    def __init__(self, file,train_file,test_file):
         # 获取用户数和物品数量
         self.num_users, self.num_items = self.Count_Num_Of_UserAndItem(file)
         # 构建训练评分矩阵
-        self.trainMatrix = self.Transform_csv_To_RatingMatrix(
-            os.getcwd() + '\\prepare_datasets\\' + os.path.basename(file) + '_train.csv')
+        self.trainMatrix = self.Transform_csv_To_RatingMatrix(train_file)
         # 构建测试评分矩阵用于后期评估运算
-        self.testMatrix = self.Transform_csv_To_RatingMatrix(
-            os.getcwd() + '\\prepare_datasets\\' + os.path.basename(file) + '_test.csv')
-        print('success Transform_csv_To_RatingMatrix!!!')
+        self.testMatrix = self.Transform_csv_To_RatingMatrix(test_file)
+        # 评分矩阵参数
         self.ratingMax, self.ratingMim, self.num_scale = 5, 1, 5
-
-    # 将csv转换称列表的形式
-    def loadcsv_to_list(self, file):
-        data = []
-        with open(file, "r") as f:
-            line = f.readline()
-            while line != None and line != "":
-                pattern = r'[,|\s|:]+'
-                arr = re.split(pattern, line)
-                # user,item,rating=int(str.strip(arr[0])),int(str.strip(arr[1])),int(str.strip(arr[2]))
-                user, item, rating = int(float(arr[0])), int(float(arr[1])), int(float(arr[2]))
-                data.append([user, item, rating])
-                line = f.readline()
-        return data
 
     # 统计总样本中用户数和物品数
     def Count_Num_Of_UserAndItem(self, ratedfile):
@@ -91,24 +76,7 @@ class Recommendation():
     # preditmatrix 是一个array[][]
     # testmatrix 是一个dokmatirx
 
-    def Evaluate_MAE(self, preditmatrix, testmatrix):
-        matrix_sub = sp.dok_matrix.copy(testmatrix)
-        userid1 = -1
-        m = 0
-        n = np.zeros(self.num_items)
-        for (userid, itemid) in testmatrix.keys():
-            matrix_sub[userid, itemid] = math.fabs(matrix_sub[userid, itemid] - preditmatrix[userid][itemid])
-            if userid != userid1:
-                m += 1
-            n[userid] += 1
-            userid1 = userid
-        sum = 0
-        sum_each_row = np.sum(matrix_sub.toarray(), axis=1)
-        for i in range(0, self.num_items):
-            if n[i] != 0:
-                sum += sum_each_row[i] / n[i]
-        MAE = sum / m
-        return MAE
+
 
 
 def SplitData_To_TrainandTest(datafile, M, k, seed):

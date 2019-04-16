@@ -66,3 +66,18 @@ def test_sigma(self):
         self.sigma += i / 1000000
         print(self.sigma)
         print(self.Generate_UserSimilarity_Matrix())
+
+
+# 将csv转换称列表的形式
+def loadcsv_to_list(self, file):
+    data = []
+    with open(file, "r") as f:
+        line = f.readline()
+        while line != None and line != "":
+            pattern = r'[,|\s|:]+'
+            arr = re.split(pattern, line)
+            # user,item,rating=int(str.strip(arr[0])),int(str.strip(arr[1])),int(str.strip(arr[2]))
+            user, item, rating = int(float(arr[0])), int(float(arr[1])), int(float(arr[2]))
+            data.append([user, item, rating])
+            line = f.readline()
+    return data
