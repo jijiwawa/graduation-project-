@@ -4,6 +4,7 @@ import prepare_datasets
 import multiprocessing
 import timeit
 import operator
+import tensorflow as tf
 import os
 import re
 from numpy.random import RandomState
@@ -74,7 +75,27 @@ def mult():
 def do_something(x):
     v = pow(x, 2)
     return v
-
+def get_train_instances(train, neg_ratio):
+    user_input, item_input, labels = [], [], []
+    num_users = train.shape[0]
+    num_items = train.shape[1]
+    for (u, i) in train.keys():
+        # positive instance
+        user_vector_u = sp.dok_matrix.toarray(train)[u]
+        user_vector_i = sp.dok_matrix.transpose(train).toarray()[i]
+        user_input.append(list(user_vector_u))
+        item_input.append(list(user_vector_i))
+        labels.append(train[u, i])
+        # negative instances
+        for t in range(neg_ratio):
+            j = np.random.randint(num_items)
+            while (u, j) in train.keys():
+                j = np.random.randint(num_items)
+            user_input.append(list(user_vector_u))
+            user_vector_j = sp.dok_matrix.transpose(train).toarray()[j]
+            item_input.append(list(user_vector_j))
+            labels.append(1.0e-6)
+    return user_input, item_input, labels
 
 if __name__ == '__main__':
     # a =[]
@@ -106,5 +127,22 @@ if __name__ == '__main__':
     # print(os.path.basename(datafile))
     # print(os.getcwd())
     # print(os.getcwd()+'\\prepare_datasets\\'+ os.path.basename(datafile)+'_train.csv')
-    for t in range(5):
-        print(t)
+    layer2_user= [[1,2,3,4]]
+    layer2_item = [[1],[1],[1],[1]]
+    # y = np.matmul(layer2_user, layer2_item)
+    y2 = np.dot(layer2_user, layer2_item)
+    y = np.matmul(layer2_user,layer2_item)
+    train = sp.dok_matrix((2,3),dtype=np.float32)
+    train[1,1] = 2
+    train[1,2]=2
+    train[0,0]=1
+    user, item, label = get_train_instances(train,2)
+    print(user)
+    print('----------------------')
+    print(item)
+    print('----------------------')
+    print(label)
+    print('----------------------')
+    user_vector_u = sp.dok_matrix.toarray(train)[1]
+    print(user_vector_u)
+    print(list([2.0]))

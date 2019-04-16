@@ -144,7 +144,7 @@ if __name__ == '__main__':
     count_test = len(open(test_path, 'rU').readlines())
     print(count_train)
     print(count_test)
-    # SplitData_To_TrainandTest(csv_path, 10, 2, 1)
+    SplitData_To_TrainandTest(csv_path, 10, 2, 1)
     # paths = [csv_path3]
     # for path in paths:
     #     print('数据集：%s信息如下：' % (path))
