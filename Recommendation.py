@@ -13,7 +13,7 @@ class Recommendation():
     # 每个file 均为路径
     def __init__(self, file,train_file,test_file):
         # 获取用户数和物品数量
-        self.num_users, self.num_items = self.Count_Num_Of_UserAndItem(file)
+        self.num_users, self.num_items ,self.num_rating= self.Count_Num_Of_UserAndItem(file)
         # 构建训练评分矩阵
         self.trainMatrix = self.Transform_csv_To_RatingMatrix(train_file)
         # 构建测试评分矩阵用于后期评估运算
@@ -24,6 +24,7 @@ class Recommendation():
     # 统计总样本中用户数和物品数
     def Count_Num_Of_UserAndItem(self, ratedfile):
         num_users, num_items = 0, 0
+        count = 0
         with open(ratedfile, "r") as f:
             line = f.readline()
             while line != None and line != "":
@@ -33,8 +34,9 @@ class Recommendation():
                 userId, itemId = int(float(arr[0])), int(float(arr[1]))
                 num_users = max(num_users, userId)
                 num_items = max(num_items, itemId)
+                count += 1
                 line = f.readline()
-        return num_users + 1, num_items + 1
+        return num_users + 1, num_items + 1,count
 
     def Transform_list_To_RatingMatrix(self, train_list):
         Matrix = sp.dok_matrix((self.num_users, self.num_items), dtype=np.float32)
@@ -105,14 +107,11 @@ def SplitData_To_TrainandTest(datafile, M, k, seed):
 if __name__ == '__main__':
     csv_path = os.getcwd()+ '\\prepare_datasets\\Hybird_data.csv'
     csv_path1 = 'E:\\0学业\\毕设\\useful_dataset\\m-100k\\m1-100k.csv'
+    test = os.getcwd() + '\\prepare_datasets\\test_99_400.base'
     train_path = os.getcwd() + '\\prepare_datasets\\' + os.path.basename(csv_path)+'_train.csv'
     test_path = os.getcwd() + '\\prepare_datasets\\' + os.path.basename(csv_path)+'_test.csv'
 
-    count_train = len(open(train_path, 'rU').readlines())
-    count_test = len(open(test_path, 'rU').readlines())
-    print(count_train)
-    print(count_test)
-    SplitData_To_TrainandTest(csv_path, 10, 2, 1)
+    SplitData_To_TrainandTest(test, 10, 2, 1)
     # paths = [csv_path3]
     # for path in paths:
     #     print('数据集：%s信息如下：' % (path))

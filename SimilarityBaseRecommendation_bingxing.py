@@ -28,27 +28,30 @@ class SimilarityBaseRecommendation(Recommendation):
         print(self.itemRatingDict)
         # 生成物品相似度矩阵，用索引方便获取
         print('物品相似度矩阵：')
-        self.itemSimialrityMatrix_Sitem = self.Generate_ItemSimilarity_Matrix()
-        np.save(os.getcwd() + '\\out_file\\itemSimialrityMatrix_' + os.path.basename(train_file) + '.npy',
-                self.itemSimialrityMatrix_Sitem)
-        # self.itemSimialrityMatrix_Sitem = np.load(
-        #     os.getcwd() + '\\out_file\\itemSimialrityMatrix_' + 'm1-100k.csv_train.csv'+ '.npy')
+        # self.itemSimialrityMatrix_Sitem = self.Generate_ItemSimilarity_Matrix()
+        # np.save(os.getcwd() + '\\out_file\\itemSimialrityMatrix_' + os.path.basename(train_file) + '_bingxing.npy',
+        #         self.itemSimialrityMatrix_Sitem)
+        self.itemSimialrityMatrix_Sitem = np.load(
+            os.getcwd() + '\\out_file\\itemSimialrityMatrix_' +  os.path.basename(train_file)+'_bingxing.npy')
         print(self.itemSimialrityMatrix_Sitem)
         # 生成用户相似度矩阵
         print('用户相似度矩阵：')
-        self.userSimilarityMatrix = self.Generate_UserSimilarity_Matrix()
-        np.save(os.getcwd() + '\\out_file\\userSimialrityMatrix_' + os.path.basename(train_file) + '.npy',
-                self.userSimilarityMatrix)
-        # self.userSimilarityMatrix = np.load(
-        #     os.getcwd() + '\\out_file\\userSimialrityMatrix_' + os.path.basename(file) + '.npy')
+        # self.userSimilarityMatrix = self.Generate_UserSimilarity_Matrix()
+        # np.save(os.getcwd() + '\\out_file\\userSimialrityMatrix_' + os.path.basename(train_file) + '_bingxing.npy',
+        #         self.userSimilarityMatrix)
+        self.userSimilarityMatrix = np.load(
+            os.getcwd() + '\\out_file\\userSimialrityMatrix_' + os.path.basename(train_file) + '_bingxing.npy')
         print(self.userSimilarityMatrix)
         # 生成评分矩阵
-        self.K = 10
-        self.predictMatrix = self.Generate_PredictRating_Matrix()
-        np.save(os.getcwd() + '\\out_file\\predictMatrix_' + str(self.K) + '_' + os.path.basename(train_file) + '.npy',
-                self.predictMatrix)
-        print('预测评分矩阵：')
-        print(self.predictMatrix)
+        self.K = 4
+        while self.K <= 20:
+            self.predictMatrix = self.Generate_PredictRating_Matrix()
+            np.save(os.getcwd() + '\\out_file\\predictMatrix_' + str(self.K) + '_' + os.path.basename(
+                train_file) + '_bingxing.npy',
+                    self.predictMatrix)
+            print('预测评分矩阵：')
+            print(self.predictMatrix)
+            self.K += 4
 
     # 从评分矩阵中生成用户的评分了的物品列表 用户/物品
     def Generate_ratingItemDict_ForEachUser(self, trainMatrix):
@@ -312,6 +315,10 @@ if __name__ == '__main__':
     Hybird_train = os.getcwd() + '\\prepare_datasets\\Hybird_data.csv_train.csv'
     Hybird_test = os.getcwd() + '\\prepare_datasets\\Hybird_data.csv_test.csv'
 
+    # test_99_400
+    test = os.getcwd() + '\\prepare_datasets\\test_99_400.base'
+    test_train = os.getcwd() + '\\prepare_datasets\\test_99_400.base_train.csv'
+    test_test = os.getcwd() + '\\prepare_datasets\\test_99_400.base_test.csv'
     # m1-100k
     ml_100k = os.getcwd() + '\\prepare_datasets\\m1-100k.csv'
     ml_100k_train = os.getcwd() + '\\prepare_datasets\\m1-100k.csv_train.csv'
@@ -325,6 +332,8 @@ if __name__ == '__main__':
     # gogogogogogogogo______test
     print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
     # sbr = SimilarityBaseRecommendation(Hybird,Hybird,Hybird_test)
-    sbr = SimilarityBaseRecommendation(ml_100k, ml_100k_train, ml_100k_test)
+    sbr = SimilarityBaseRecommendation(test, test_train, test_test)
+
+    # sbr = SimilarityBaseRecommendation(ml_100k, ml_100k_train, ml_100k_test)
     # sbr = SimilarityBaseRecommendation(ml_1m,ml_1m_train,ml_1m_test)
     print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))

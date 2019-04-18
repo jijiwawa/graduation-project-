@@ -87,27 +87,59 @@ def test_asarray():
 def do_something(x):
     v = pow(x, 2)
     return v
+# def get_train_instances(train, neg_ratio):
+#     user_input, item_input, labels = [], [], []
+#     num_users = train.shape[0]
+#     num_items = train.shape[1]
+#     for (u, i) in train.keys():
+#         # positive instance
+#         user_vector_u = sp.dok_matrix.toarray(train)[u]
+#         user_vector_i = sp.dok_matrix.transpose(train).toarray()[i]
+#         user_input.append(list(user_vector_u))
+#         item_input.append(list(user_vector_i))
+#         labels.append(train[u, i])
+#         # negative instances
+#         for t in range(neg_ratio):
+#             j = np.random.randint(num_items)
+#             while (u, j) in train.keys():
+#                 j = np.random.randint(num_items)
+#             user_input.append(list(user_vector_u))
+#             user_vector_j = sp.dok_matrix.transpose(train).toarray()[j]
+#             item_input.append(list(user_vector_j))
+#             labels.append(1.0e-6)
+#     return user_input, item_input, labels
 def get_train_instances(train, neg_ratio):
     user_input, item_input, labels = [], [], []
     num_users = train.shape[0]
     num_items = train.shape[1]
+    print(num_users)
+    print(num_items)
+    # count=1
     for (u, i) in train.keys():
         # positive instance
-        user_vector_u = sp.dok_matrix.toarray(train)[u]
-        user_vector_i = sp.dok_matrix.transpose(train).toarray()[i]
-        user_input.append(list(user_vector_u))
-        item_input.append(list(user_vector_i))
-        labels.append(train[u, i])
+        # user_vector_u = sp.dok_matrix.toarray(train)[u]
+        # user_vector_i = sp.dok_matrix.transpose(train).toarray()[i]
+        # user_input.append(list(user_vector_u))
+        # item_input.append(list(user_vector_i))
+        user_input.append([u])
+        item_input.append([i])
+        labels.append([train[u, i]])
         # negative instances
         for t in range(neg_ratio):
             j = np.random.randint(num_items)
             while (u, j) in train.keys():
                 j = np.random.randint(num_items)
-            user_input.append(list(user_vector_u))
-            user_vector_j = sp.dok_matrix.transpose(train).toarray()[j]
-            item_input.append(list(user_vector_j))
-            labels.append(1.0e-6)
+            # user_input.append(list(user_vector_u))
+            # user_vector_j = sp.dok_matrix.transpose(train).toarray()[j]
+            # item_input.append(list(user_vector_j))
+            user_input.append([j])
+            item_input.append([u])
+            labels.append([1.0e-6])
+            # count+=1
+            # print(count)
+    print('加载数据完成！')
     return user_input, item_input, labels
+
 
 if __name__ == '__main__':
     # a =[]
@@ -158,6 +190,3 @@ if __name__ == '__main__':
     user_vector_u = sp.dok_matrix.toarray(train)[1]
     print(user_vector_u)
     print(list([2.0]))
-    test_asarray()
-    for i in range(5):
-        print(i)

@@ -1,0 +1,11 @@
+A Hybrid User Similarity Model for Collaborative Filtering
+num_user:99
+num_items:400
+ranting:3389
+Sparsity level:0.086
+K	MAE
+4	0.7862739281371912
+8	0.7588479143932628
+12	0.7706180498851993
+16	0.7753481117944314
+20	0.7778241669467101
