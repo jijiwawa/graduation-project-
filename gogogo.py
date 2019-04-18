@@ -71,6 +71,18 @@ def mult():
         zip_args = list(zip(userId_i1, userId_j))
         print(zip_args)
 
+def test_asarray():
+    A= [[0.1, 0.2, 0.3], [1.1, 1.2, 1.3], [2.1, 2.2, 2.3], [3.1, 3.2, 3.3], [4.1, 4.2, 4.3]]
+    embedding = a = np.asarray(A)
+    print(embedding)
+    print(a)
+    print(A)
+    a[1] =1
+    print(embedding)
+    print(a)
+    print(np.transpose(a))
+    print(A)
+
 
 def do_something(x):
     v = pow(x, 2)
@@ -146,3 +158,6 @@ if __name__ == '__main__':
     user_vector_u = sp.dok_matrix.toarray(train)[1]
     print(user_vector_u)
     print(list([2.0]))
+    test_asarray()
+    for i in range(5):
+        print(i)

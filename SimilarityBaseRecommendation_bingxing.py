@@ -219,7 +219,7 @@ class SimilarityBaseRecommendation(Recommendation):
 
     # 预测评分
     def Generate_Predicti_User_U_OnItem_I(self, u, i):
-        print("(%d,%d)用户之间相似度计算" % (u, i))
+        print("(%d,%d)用户对物品评分预测" % (u, i))
         print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
         ave_u = sum(list(self.trainMatrix[u].toarray()[0])) / len(self.trainMatrix[u])
         user_u_vertor = list(self.userSimilarityMatrix[1])
@@ -255,7 +255,7 @@ class SimilarityBaseRecommendation(Recommendation):
             predictMatrix[i1] = p.map(self.multi_Predict, zip_args)
             p.close()
             p.join()
-            print("第%d个用户与其他用户的相似度结束" % (i))
+            print("第第%d个用户评分预测结束" % (i))
             print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
         return predictMatrix
 
