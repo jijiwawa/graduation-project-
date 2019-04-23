@@ -225,7 +225,8 @@ class SimilarityBaseRecommendation(Recommendation):
         print("(%d,%d)用户对物品评分预测" % (u, i))
         print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
         ave_u = sum(list(self.trainMatrix[u].toarray()[0])) / len(self.trainMatrix[u])
-        user_u_vertor = list(self.userSimilarityMatrix[1])
+        user_u_vertor = list(self.userSimilarityMatrix[u])
+        print(user_u_vertor)
         # 前k相似用户result
         result = list(map(user_u_vertor.index, heapq.nlargest(self.K, user_u_vertor)))
         up_up = 0
@@ -333,7 +334,6 @@ if __name__ == '__main__':
     print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))
     # sbr = SimilarityBaseRecommendation(Hybird,Hybird,Hybird_test)
     sbr = SimilarityBaseRecommendation(test, test_train, test_test)
-
     # sbr = SimilarityBaseRecommendation(ml_100k, ml_100k_train, ml_100k_test)
     # sbr = SimilarityBaseRecommendation(ml_1m,ml_1m_train,ml_1m_test)
     print(time.strftime('%Y.%m.%d %H:%M:%S', time.localtime(time.time())))

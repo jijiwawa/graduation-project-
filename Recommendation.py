@@ -14,6 +14,9 @@ class Recommendation():
     def __init__(self, file,train_file,test_file):
         # 获取用户数和物品数量
         self.num_users, self.num_items ,self.num_rating= self.Count_Num_Of_UserAndItem(file)
+        print(self.num_users)
+        print(self.num_items)
+        print(self.num_rating)
         # 构建训练评分矩阵
         self.trainMatrix = self.Transform_csv_To_RatingMatrix(train_file)
         # 构建测试评分矩阵用于后期评估运算
@@ -77,7 +80,29 @@ class Recommendation():
 
     # preditmatrix 是一个array[][]
     # testmatrix 是一个dokmatirx
+    # 从评分矩阵中生成用户的评分了的物品列表 用户/物品
+    def Generate_ratingItemDict_ForEachUser(self, trainMatrix):
+        ratingItemList = dict()
+        for (userid, itemid) in trainMatrix.keys():
+            if userid not in ratingItemList.keys():
+                ratingItemList[userid] = set()
+            ratingItemList[userid].add(itemid)
+        return ratingItemList
 
+    # 从csv中生成物品的评分字典  {物品id:{评分}}
+    def Generate_ratingDict_ForEachItem(self, file):
+        itemRatingDict = dict()
+        with open(file, "r") as f:
+            line = f.readline()
+            while line != None and line != "":
+                pattern = r'[,|\s|:]+'
+                arr = re.split(pattern, line)
+                userId, itemId, rating = int(float(arr[0])), int(float(arr[1])), int(float(arr[2]))
+                if itemId not in itemRatingDict.keys():
+                    itemRatingDict[itemId] = []
+                itemRatingDict[itemId].append(rating)
+                line = f.readline()
+        return itemRatingDict
 
 
 

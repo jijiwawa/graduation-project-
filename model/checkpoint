@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\model\\test_99_400.base_model.ckpt"
+all_model_checkpoint_paths: "C:\\Users\\suxik\\Desktop\\text\\graduation-project-\\model\\test_99_400.base_model.ckpt"
