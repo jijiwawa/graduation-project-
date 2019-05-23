@@ -1,0 +1,8 @@
+Deep Matrix Factorization Models for Recommender Systems 
+num_user:943
+num_items:1682
+ranting:100000
+Sparsity level:0.063
+item_topk	    HR
+        5	0.0252
+       10	0.0449

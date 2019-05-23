@@ -81,3 +81,30 @@ def loadcsv_to_list(self, file):
             data.append([user, item, rating])
             line = f.readline()
     return data
+
+
+def Evaluate_Precision_AND_Recall(preditmatrix, testmatrix,topk):
+    IRup = dict()
+    IRua = dict()
+    topK = topk
+    for (userid, itemid) in testmatrix.keys():
+        if userid not in IRua.keys():
+            user_u_vertor = np.array(list(preditmatrix[userid]))
+            IRup[userid] = np.argsort(user_u_vertor)[-topK:]
+            user_u_vertor_test = np.array(sp.dok_matrix.toarray(testmatrix)[userid])
+            IRua[userid] = np.argsort(user_u_vertor_test)[-topK:]
+    sum_precision, sum_recall, m = 0, 0, 0
+    for userid in IRua.keys():
+        m += 1
+        IRup_userid = list(IRup[userid])
+        IRua_userid = list(IRua[userid])
+        ret_list = list((set(IRup_userid).union(set(IRua_userid))) ^ (set(IRup_userid) ^ set(IRua_userid)))
+        sum_precision += len(ret_list) / len(IRup_userid)
+        sum_recall += len(ret_list) / len(IRua_userid)
+    Precision = sum_precision / m
+    Recall = sum_recall / m
+    return Precision, Recall
+
+
+def Evaluate_F1_measure(Precision, Recall):
+    return (2 * Precision * Recall) / (Precision + Recall)

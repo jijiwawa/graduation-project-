@@ -1,0 +1,11 @@
+A Hybrid User Similarity Model for Collaborative Filtering
+num_user:200
+num_items:120
+ranting:1308
+Sparsity level:0.054
+     K	    HR
+     4	0.2328
+     8	0.2602
+    12	0.3150
+    16	0.3013
+    20	0.3013

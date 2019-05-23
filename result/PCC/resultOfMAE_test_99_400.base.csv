@@ -1,0 +1,11 @@
+PCC Model for Collaborative Filtering
+num_user:99
+num_items:400
+ranting:3389
+Sparsity level:0.086
+     K	   MAE	  NMAE
+     4	0.8121	0.2030
+     8	0.8128	0.2032
+    12	0.8132	0.2033
+    16	0.8137	0.2034
+    20	0.8099	0.2024

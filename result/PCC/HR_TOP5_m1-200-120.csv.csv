@@ -1,0 +1,11 @@
+PCC Model for Collaborative Filtering
+num_user:200
+num_items:120
+ranting:1308
+Sparsity level:0.054
+     K	    HR
+     4	0.2191
+     8	0.1369
+    12	0.1917
+    16	0.1780
+    20	0.1780
